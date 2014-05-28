@@ -7,8 +7,8 @@ Finds the package descriptor file of a node.js application.
 Given a node.js application, finds the `package.json` file and returns an
 object having the following two properties:
 
-`name`: the name property from the `package.json` file
-`directory`: the directory containing the `package.json` file
+- `name`: the name property from the `package.json` file
+- `directory`: the directory containing the `package.json` file
 
 ## Usage
 
