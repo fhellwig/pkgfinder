@@ -56,4 +56,4 @@ function getPackageInfo() {
     };
 }
 
-module.exports = getPackageInfo();
+module.exports = getPackageInfo;

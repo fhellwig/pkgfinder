@@ -4,8 +4,8 @@ Finds the package descriptor file of a node.js application.
 
 ## Overview
 
-Given a node.js application, finds the `package.json` file and returns an
-object having the following two properties:
+Given a node.js application, calling `pkgfinder()` finds the `package.json`
+file and returns an object having the following two properties:
 
 - `name`: the name property from the `package.json` file
 - `directory`: the directory containing the `package.json` file
@@ -13,8 +13,9 @@ object having the following two properties:
 ## Usage
 
 ```javascript
-var pkginfo = require('pkginfo');
-console.dir(pkginfo);
+var pkgfinder = require('pkgfinder');
+var pkg = pkgfinder();
+console.dir(pkg);
 ```
 
 ## Rationale
