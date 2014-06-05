@@ -52,7 +52,10 @@ function getPackageInfo() {
     }
     return {
         name: pkg.name,
-        directory: current
+        directory: current,
+        resolve: function(p) {
+            return path.resolve(this.directory, p);
+        }
     };
 }
 
