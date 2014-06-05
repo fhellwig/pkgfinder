@@ -26,7 +26,7 @@ console.log('resolve: %s', pkg.resolve('data'));
 Utility packages often care about the application in which they are used than
 their own environment. For example, a configuration manager will look for a
 `config` subdirectory in the top-level application directory. This has nothing
-to do with the configuration managers location in the `node_module` tree and
+to do with the configuration manager's location in the `node_module` tree and
 may not even have anything to do with the parent module, which could be in a
 `lib` subdirectory.
 
