@@ -55,7 +55,8 @@ function getPackageInfo() {
         directory: current,
         resolve: function(p) {
             return path.resolve(this.directory, p);
-        }
+        },
+        isCurrent: current == process.cwd()
     };
 }
 

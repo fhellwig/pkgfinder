@@ -7,9 +7,10 @@ Finds the package descriptor file of a node.js application.
 Given a node.js application, calling `pkgfinder()` finds the `package.json`
 file and returns an object having the following three properties:
 
-- `name`: the name property from the `package.json` file
-- `directory`: the directory containing the `package.json` file
-- `resolve`: a convenience function that resolves the argument against the directory
+- `name`: {string} the name property from the `package.json` file
+- `directory`: {string} the directory containing the `package.json` file
+- `resolve`: {function} a convenience function that resolves the argument against the directory
+- `isCurrent`: {boolean} true if the current working directory is the same as the package directory
 
 ## Usage
 
@@ -19,6 +20,7 @@ var pkg = pkgfinder();
 console.log('name: %s', pkg.name);
 console.log('directory: %s', pkg.directory);
 console.log('resolve: %s', pkg.resolve('data'));
+console.log('isCurrent: %s', pkg.isCurrent);
 ```
 
 ## Rationale
