@@ -4,30 +4,29 @@ Finds the package descriptor file of a node.js application.
 
 ## Overview
 
-Given a node.js application, calling `pkgfinder()` finds the `package.json`
-file and returns an object having the following three properties:
+Given a node.js application, calling `require('pkgfinder')` finds the `package.json`
+file and returns an object having the following four properties:
 
 - `name`: {string} the name property from the `package.json` file
-- `directory`: {string} the directory containing the `package.json` file
-- `resolve`: {function} a convenience function that resolves the argument against the directory
-- `isCurrent`: {boolean} true if the current working directory is the same as the package directory
+- `directory`: {string} the application directory containing the `package.json` file
+- `resolve`: {function} returns the result of resolving the argument argument against the application directory
+- `isCurrent`: {function} returns true if the current working directory is the same as the package directory
 
 ## Usage
 
 ```javascript
 var pkgfinder = require('pkgfinder');
-var pkg = pkgfinder();
-console.log('name: %s', pkg.name);
-console.log('directory: %s', pkg.directory);
-console.log('resolve: %s', pkg.resolve('data'));
-console.log('isCurrent: %s', pkg.isCurrent);
+console.log('name: %s', pkgfinder.name);
+console.log('directory: %s', pkgfinder.directory);
+console.log('resolve: %s', pkgfinder.resolve('data'));
+console.log('isCurrent: %s', pkgfinder.isCurrent());
 ```
 
 ## Rationale
 
-Utility packages often care about the application in which they are used than
-their own environment. For example, a configuration manager will look for a
-`config` subdirectory in the top-level application directory. This has nothing
+Utility packages often care about the application in which they are used rather
+than their own environment. For example, a configuration manager may look for
+an `etc` subdirectory in the top-level application directory. This has nothing
 to do with the configuration manager's location in the `node_module` tree and
 may not even have anything to do with the parent module, which could be in a
 `lib` subdirectory.

@@ -1,6 +1,6 @@
 {
     "name": "pkgfinder",
-    "version": "1.0.6",
+    "version": "2.0.0",
     "description": "Finds the package descriptor file of a node.js application.",
     "keywords": ["package","module"],
     "licenses": [{
