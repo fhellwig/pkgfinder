@@ -4,23 +4,21 @@ Finds the package descriptor file of a node.js application.
 
 ## Overview
 
-Given a node.js application, calling `require('pkgfinder')` finds the `package.json`
-file and returns an object having the following four properties:
-
-- `name`: {string} the name property from the `package.json` file
-- `directory`: {string} the application directory containing the `package.json` file
-- `resolve`: {function} returns the result of resolving the argument argument against the application directory
-- `isCurrent`: {function} returns true if the current working directory is the same as the package directory
-
-## Usage
+Given a node.js application, finds the `package.json` file.
 
 ```javascript
 var pkgfinder = require('pkgfinder');
-console.log('name: %s', pkgfinder.name);
-console.log('directory: %s', pkgfinder.directory);
-console.log('resolve: %s', pkgfinder.resolve('data'));
-console.log('isCurrent: %s', pkgfinder.isCurrent());
+
+var pkg = pkgfinder();
 ```
+
+The returned `pkg` object has the following three properties:
+
+- `name`: {string} the name property from the `package.json` file
+- `directory`: {string} the application directory containing the `package.json` file
+- `resolve`: {function} resolves the argument argument against the application directory
+
+Executing `node pkgfinder` will run an example.
 
 ## Rationale
 

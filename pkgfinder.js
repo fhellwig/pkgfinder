@@ -52,14 +52,18 @@ function getPackageInfo() {
     }
     return {
         name: pkg.name,
-        directory: current,
-        resolve: function(p) {
-            return path.resolve(this.directory, p);
-        },
-        isCurrent: function() {
-            return current == process.cwd();
-        }
-    };
+            directory: current,
+            resolve: function(p) {
+                return path.resolve(this.directory, p);
+            }
+    }
 }
 
-module.exports = getPackageInfo();
+module.exports = getPackageInfo;
+
+if (!module.parent) {
+    var pkg = getPackageInfo();
+    console.log("             name: " + pkg.name);
+    console.log("        directory: " + pkg.directory);
+    console.log("resolve('config'): " + pkg.resolve('config'));
+}
