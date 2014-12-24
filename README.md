@@ -8,7 +8,6 @@ Given a node.js application, finds the `package.json` file.
 
 ```javascript
 var pkgfinder = require('pkgfinder');
-
 var pkg = pkgfinder();
 ```
 
@@ -24,10 +23,10 @@ Executing `node pkgfinder` will run an example.
 
 Utility packages often care about the application in which they are used rather
 than their own environment. For example, a configuration manager may look for
-an `etc` subdirectory in the top-level application directory. This has nothing
-to do with the configuration manager's location in the `node_module` tree and
-may not even have anything to do with the parent module, which could be in a
-`lib` subdirectory.
+an `config` subdirectory in the top-level application directory. This has
+nothing to do with the configuration manager's location in the `node_module`
+tree and may not even have anything to do with the parent module, which could
+be in a `lib` subdirectory.
 
 ## Algorithm
 
