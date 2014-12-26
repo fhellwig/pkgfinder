@@ -50,20 +50,25 @@ function getPackageInfo() {
     if (!pkg.name) {
         throw new Error("Cannot find property 'name' in '" + pathname + "'.");
     }
-    return {
+    var retval = {
         name: pkg.name,
-            directory: current,
-            resolve: function(p) {
-                return path.resolve(this.directory, p);
-            }
+        directory: current,
+        resolve: function (p) {
+            return path.resolve(current, p);
+        },
+        relative: function (p) {
+            return path.relative(current, p);
+        }
     }
+    return retval;
 }
 
 module.exports = getPackageInfo;
 
 if (!module.parent) {
     var pkg = getPackageInfo();
-    console.log("             name: " + pkg.name);
-    console.log("        directory: " + pkg.directory);
-    console.log("resolve('config'): " + pkg.resolve('config'));
+    console.log("              name: " + pkg.name);
+    console.log("         directory: " + pkg.directory);
+    console.log(" resolve('config'): " + pkg.resolve('config'));
+    console.log("relative('config'): " + pkg.relative('config'));
 }
