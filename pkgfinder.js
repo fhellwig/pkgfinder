@@ -22,13 +22,40 @@
 
 var path = require('path');
 
-function getPackageInfo() {
-    // Finds the package.json file and returns an object having the following
-    // two properties: name and directory. The name property is the name from
-    // the package.json file. The directory property is the location of the
-    // package.json file.
-    var initial = path.dirname(require.main.filename),
-        current = initial,
+/**
+ * Given an initial directory, finds the package.json file and returns an
+ * object having the following four properties: name (string), directory
+ * (string), resolve (function), and relative (function).
+ *
+ * The name is the name property from the package.json file. The directory
+ * is the location of the package.json file. The resolve function and the
+ * relative function are similar to their path module counterparts, using
+ * the directory as their first argument.
+ *
+ * If no argument is supplied, the starting directory is the directory of
+ * the require.main.filename property. If it is a module, then the directory
+ * of the filename property is used. Finally, if it is a string, then that
+ * string is assumed to be the starting directory.
+ *
+ * In all cases, if a package.json file is found in that directory, then it
+ * is used. Otherwise, the parent directory is searched. The search for a
+ * package.json file continues until the root directory is found.
+ *
+ * An exception is thrown if the package.json file is not found, cannot be
+ * read, or does not have a name property.
+ */
+function pkgfinder(arg) {
+    var initial;
+    if (typeof arg === 'undefined') {
+        initial = path.dirname(require.main.filename);
+    } else if (typeof arg === 'object' && typeof arg.filename === 'string') {
+        initial = path.dirname(arg.filename);
+    } else if (typeof arg === 'string') {
+        initial = arg;
+    } else {
+        throw new Error("Invalid argument (expected a module object or a string).");
+    }
+    var current = initial,
         pathname,
         pkg;
     while (true) {
@@ -63,10 +90,10 @@ function getPackageInfo() {
     return retval;
 }
 
-module.exports = getPackageInfo;
+module.exports = pkgfinder;
 
 if (!module.parent) {
-    var pkg = getPackageInfo();
+    var pkg = pkgfinder();
     console.log("              name: " + pkg.name);
     console.log("         directory: " + pkg.directory);
     console.log(" resolve('config'): " + pkg.resolve('config'));
