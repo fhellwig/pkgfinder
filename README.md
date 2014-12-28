@@ -22,6 +22,12 @@ Executing `node pkgfinder` will run an example.
 
 ## Details
 
+Calling `require('pkgfinder')` returns a single `pkgfinder` function.
+
+```javascript
+pkgfinder(arg)
+```
+
 Given an initial directory, the `pkgfinder` function finds the `package.json`
 file and returns an object having the following four properties: name (string),
 directory (string), resolve (function), and relative (function).
@@ -31,10 +37,12 @@ is the location of the `package.json` file. The `resolve` function and the
 `relative ` function are similar to their  `path` module counterparts, using
 the `directory` as their first argument.
 
-If no argument is supplied, the starting directory is the directory of the
-`require.main.filename` property. If it is a module, then the directory of the
-`filename` property is used. Finally, if it is a string, then that string is
-assumed to be the starting directory.
+The `arg` parameter is optional. If it is supplied, then it must either be a
+module object or a string.
+
+- If no argument is supplied, the starting directory is the directory of the `require.main.filename` property.
+- If it is a module object, then the directory of the `filename` property is used.
+- If it is a string, then that string is assumed to be the starting directory.
 
 In all cases, if a `package.json` file is found in that directory, then it is
 used. Otherwise, the parent directory is searched. The search for a
