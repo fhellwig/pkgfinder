@@ -18,8 +18,6 @@ The returned `pkg` object has the following four properties:
 - `resolve`: {function} resolves the specified argument against the application directory
 - `relative`: {function} returns the relative path of the argument with respect to the application directory
 
-Executing `node pkgfinder` will run an example.
-
 ## Details
 
 Calling `require('pkgfinder')` returns a single `pkgfinder` function.
@@ -40,7 +38,7 @@ the `directory` as their first argument.
 The `module` parameter is optional. If it is supplied, then it must be a module
 object. If the `module` parameter is not specified, then the initial directory
 is the directory of the `require.main.filename` property. If the `module`
-parameter is spedified, then the initial directory is the directory of the
+parameter is specified, then the initial directory is the directory of the
 module's `filename` property.
 
 In both cases, if a `package.json` file is found in that directory, then it is

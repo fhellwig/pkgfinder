@@ -35,7 +35,7 @@ var path = require('path');
  * The module parameter is optional. If it is supplied, then it must be a
  * module object. If the module parameter is not specified, then the initial
  * directory is the directory of the require.main.filename property. If the
- * module parameter is spedified, then the initial directory is the directory
+ * module parameter is specified, then the initial directory is the directory
  * of the module's filename property.
  *
  * In both cases, if a package.json file is found in that directory, then it is
