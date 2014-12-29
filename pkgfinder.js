@@ -32,30 +32,22 @@ var path = require('path');
  * relative function are similar to their path module counterparts, using
  * the directory as their first argument.
  *
- * If no argument is supplied, the starting directory is the directory of
- * the require.main.filename property. If it is a module, then the directory
- * of the filename property is used. Finally, if it is a string, then that
- * string is assumed to be the starting directory.
+ * The module parameter is optional. If it is supplied, then it must be a
+ * module object. If the module parameter is not specified, then the initial
+ * directory is the directory of the require.main.filename property. If the
+ * module parameter is spedified, then the initial directory is the directory
+ * of the module's filename property.
  *
- * In all cases, if a package.json file is found in that directory, then it
- * is used. Otherwise, the parent directory is searched. The search for a
+ * In both cases, if a package.json file is found in that directory, then it is
+ * used. Otherwise, the parent directory is searched. The search for a
  * package.json file continues until the root directory is found.
  *
  * An exception is thrown if the package.json file is not found, cannot be
  * read, or does not have a name property.
  */
-function pkgfinder(arg) {
-    var initial;
-    if (typeof arg === 'undefined') {
-        initial = path.dirname(require.main.filename);
-    } else if (typeof arg === 'object' && typeof arg.filename === 'string') {
-        initial = path.dirname(arg.filename);
-    } else if (typeof arg === 'string') {
-        initial = arg;
-    } else {
-        throw new Error("Invalid argument (expected a module object or a string).");
-    }
-    var current = initial,
+function pkgfinder(module) {
+    var initial = initialDirectory(module),
+        current = initial,
         pathname,
         pkg;
     while (true) {
@@ -90,12 +82,14 @@ function pkgfinder(arg) {
     return retval;
 }
 
-module.exports = pkgfinder;
-
-if (!module.parent) {
-    var pkg = pkgfinder();
-    console.log("              name: " + pkg.name);
-    console.log("         directory: " + pkg.directory);
-    console.log(" resolve('config'): " + pkg.resolve('config'));
-    console.log("relative('config'): " + pkg.relative('config'));
+function initialDirectory(module) {
+    if (typeof module === 'undefined') {
+        return path.dirname(require.main.filename);
+    }
+    if (typeof module === 'object' && typeof module.filename === 'string') {
+        return path.dirname(module.filename);
+    }
+    throw new Error("The parameter, if specified, must be a module object.");
 }
+
+module.exports = pkgfinder;
