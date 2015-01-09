@@ -72,11 +72,11 @@ function pkgfinder(module) {
     var retval = {
         name: pkg.name,
         directory: current,
-        resolve: function (p) {
-            return path.resolve(current, p);
+        resolve: function () {
+            return path.resolve.apply(path, [current].concat(Array.prototype.slice.call(arguments)));
         },
-        relative: function (p) {
-            return path.relative(current, p);
+        relative: function (to) {
+            return path.relative(current, to);
         }
     }
     return retval;
