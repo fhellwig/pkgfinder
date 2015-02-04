@@ -22,5 +22,5 @@
     "engine": {
         "node": ">=0.8"
     },
-    "homepage": "https://github.com/fhellwig/pkgfinder",
+    "homepage": "https://github.com/fhellwig/pkgfinder"
 }
