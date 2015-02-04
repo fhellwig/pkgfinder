@@ -44,6 +44,9 @@ var path = require('path');
  *
  * An exception is thrown if the package.json file is not found, cannot be
  * read, or does not have a name property.
+ *
+ * If the require.main.filename includes 'iisnode', then we are running on
+ * Azure and we use the current working directory instead.
  */
 function pkgfinder(module) {
     var initial = initialDirectory(module),
@@ -82,9 +85,15 @@ function pkgfinder(module) {
     return retval;
 }
 
+pkgfinder.iisnode = require.main.filename.match(/iisnode/i);
+
 function initialDirectory(module) {
     if (typeof module === 'undefined') {
-        return path.dirname(require.main.filename);
+        if (pkgfinder.iisnode) {
+            return process.cwd();
+        } else {
+            return path.dirname(require.main.filename);
+        }
     }
     if (typeof module === 'object' && typeof module.filename === 'string') {
         return path.dirname(module.filename);

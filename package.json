@@ -1,13 +1,19 @@
 {
     "name": "pkgfinder",
-    "version": "1.2.2",
+    "version": "1.2.4",
     "description": "Finds the package descriptor file of a node.js application.",
-    "keywords": ["package","module"],
+    "keywords": [
+        "package",
+        "module"
+    ],
     "licenses": [{
         "type": "MIT",
         "url": "http://www.opensource.org/licenses/MIT"
     }],
-    "author": "Frank Hellwig <frank@hellwig.org>",
+    "author": {
+        "name": "Frank Hellwig",
+        "email": "frank@hellwig.org"
+    },
     "repository": {
         "type": "git",
         "url": "https://github.com/fhellwig/pkgfinder.git"
@@ -15,5 +21,6 @@
     "main": "./pkgfinder.js",
     "engine": {
         "node": ">=0.8"
-    }
+    },
+    "homepage": "https://github.com/fhellwig/pkgfinder",
 }
