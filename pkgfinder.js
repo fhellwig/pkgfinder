@@ -85,7 +85,7 @@ function pkgfinder(module) {
     return retval;
 }
 
-pkgfinder.iisnode = require.main.filename.match(/iisnode/i);
+pkgfinder.iisnode = require.main.filename.match(/iisnode/i) !== null;
 
 function initialDirectory(module) {
     if (typeof module === 'undefined') {
