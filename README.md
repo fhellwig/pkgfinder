@@ -11,9 +11,10 @@ var pkgfinder = require('pkgfinder'),
     pkg = pkgfinder();
 ```
 
-The returned `pkg` object has the following four properties:
+The returned `pkg` object has the following five properties:
 
 - `name`: {string} the name property from the `package.json` file
+- `version`: {string} the version property from the `package.json` file
 - `directory`: {string} the application directory containing the `package.json` file
 - `resolve`: {function} resolves the specified argument against the application directory
 - `relative`: {function} returns the relative path of the argument with respect to the application directory

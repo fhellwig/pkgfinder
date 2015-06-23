@@ -74,6 +74,7 @@ function pkgfinder(module) {
     }
     var retval = {
         name: pkg.name,
+        version: pkg.version,
         directory: current,
         resolve: function () {
             return path.resolve.apply(path, [current].concat(Array.prototype.slice.call(arguments)));

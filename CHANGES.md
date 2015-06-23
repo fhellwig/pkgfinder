@@ -1,6 +1,11 @@
 pkgfinder changes
 =================
 
+1.2.6
+-----
+
+- Added the version property.
+
 1.2.5
 -----
 
