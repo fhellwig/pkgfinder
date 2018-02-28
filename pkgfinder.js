@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Frank Hellwig
+ * Copyright (c) 2018 Frank Hellwig
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -20,7 +20,7 @@
  * IN THE SOFTWARE.
  */
 
-var path = require('path');
+const path = require("path");
 
 /**
  * Given an initial directory, finds the package.json file and returns an
@@ -49,57 +49,61 @@ var path = require('path');
  * Azure and we use the current working directory instead.
  */
 function pkgfinder(module) {
-    var initial = initialDirectory(module),
-        current = initial,
-        pathname,
-        pkg;
-    while (true) {
-        pathname = path.resolve(current, 'package.json');
-        try {
-            pkg = require(pathname);
-            break;
-        } catch (err) {
-            if (err.code !== 'MODULE_NOT_FOUND') {
-                throw err;
-            }
-        }
-        var parent = path.resolve(current, '..');
-        if (current == parent) {
-            throw new Error("Cannot find 'package.json' in '" + initial + "' nor any of its parent directories.");
-        }
-        current = parent;
+  const initial = initialDirectory(module);
+  let current = initial;
+  let pathname;
+  let pkg;
+  while (true) {
+    pathname = path.resolve(current, "package.json");
+    try {
+      pkg = require(pathname);
+      break;
+    } catch (err) {
+      if (err.code !== "MODULE_NOT_FOUND") {
+        throw err;
+      }
     }
-    if (!pkg.name) {
-        throw new Error("Cannot find property 'name' in '" + pathname + "'.");
+    let parent = path.resolve(current, "..");
+    if (current == parent) {
+      throw new Error(
+        `Cannot find 'package.json' in '${initial}' nor any of its parent directories.`
+      );
     }
-    var retval = {
-        name: pkg.name,
-        version: pkg.version,
-        directory: current,
-        resolve: function () {
-            return path.resolve.apply(path, [current].concat(Array.prototype.slice.call(arguments)));
-        },
-        relative: function (to) {
-            return path.relative(current, to);
-        }
+    current = parent;
+  }
+  if (!pkg.name) {
+    throw new Error(`Cannot find property 'name' in '${pathname}'.`);
+  }
+  return {
+    name: pkg.name,
+    version: pkg.version,
+    directory: current,
+    resolve: function() {
+      return path.resolve.apply(
+        path,
+        [current].concat(Array.prototype.slice.call(arguments))
+      );
+    },
+    relative: function(to) {
+      return path.relative(current, to);
     }
-    return retval;
+  };
 }
 
 pkgfinder.iisnode = require.main.filename.match(/iisnode/i) !== null;
 
 function initialDirectory(module) {
-    if (typeof module === 'undefined') {
-        if (pkgfinder.iisnode) {
-            return process.cwd();
-        } else {
-            return path.dirname(require.main.filename);
-        }
+  if (typeof module === "undefined") {
+    if (pkgfinder.iisnode) {
+      return process.cwd();
+    } else {
+      return path.dirname(require.main.filename);
     }
-    if (typeof module === 'object' && typeof module.filename === 'string') {
-        return path.dirname(module.filename);
-    }
-    throw new Error("The parameter, if specified, must be a module object.");
+  }
+  if (typeof module === "object" && typeof module.filename === "string") {
+    return path.dirname(module.filename);
+  }
+  throw new Error(`The parameter, if specified, must be a module object.`);
 }
 
 module.exports = pkgfinder;
