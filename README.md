@@ -7,69 +7,62 @@ Finds the package descriptor file of a node.js application.
 Given a node.js application, finds the `package.json` file.
 
 ```javascript
-const pkgfinder = require('pkgfinder');
-const pkg = pkgfinder();
+const pkg = require('pkgfinder')();
 ```
 
-The returned `pkg` object has the following five properties:
+The returned `pkg` object has the following seven properties:
 
 - `name`: {string} the name property from the `package.json` file
 - `version`: {string} the version property from the `package.json` file
 - `directory`: {string} the application directory containing the `package.json` file
+- `prop`: {function} returns the value of an arbitrary `package.json` property
 - `resolve`: {function} resolves the specified argument against the application directory
 - `relative`: {function} returns the relative path of the argument with respect to the application directory
+- `iisnode`: {boolean} true if running on (iisnode)[https://github.com/Azure/iisnode] (i.e., Azure).
+
+Please see the `examples.js` file for sample usage.
 
 ## Details
 
 Calling `require('pkgfinder')` returns a single `pkgfinder` function.
 
 ```javascript
-pkgfinder([module])
+pkgfinder([module]);
 ```
 
-Given an initial directory, the `pkgfinder` function finds the `package.json`
-file and returns an object having the following four properties: name (string),
-directory (string), resolve (function), and relative (function).
+The `module` parameter is optional. If it is supplied, then it must be a module object. If the `module` parameter is not specified, then the initial directory is the directory of the `require.main.filename` property. If the `module` parameter is specified, then the initial directory is the directory of the module's `filename` property.
 
-The `name` is the `name` property from the `package.json` file. The `directory`
-is the location of the `package.json` file. The `resolve` function and the
-`relative ` function are similar to their  `path` module counterparts, using
-the `directory` as their first argument.
+A special exception to this is if `require.main` contains the string `iisnode`. In that case, we are probably running on Microsoft Azure and use the current working directory as the initial directory. A boolean flag indicating this is available on the exported module function as `pkgfinder.issnode`.
 
-The `module` parameter is optional. If it is supplied, then it must be a module
-object. If the `module` parameter is not specified, then the initial directory
-is the directory of the `require.main.filename` property. If the `module`
-parameter is specified, then the initial directory is the directory of the
-module's `filename` property.
+In both cases, if a `package.json` file is found in that directory, then it is used. Otherwise, the parent directory is searched. The search for a `package.json` file continues until the root directory is found.
 
-A special exception to this is if `require.main` contains the string `iisnode`.
-In that case, we are probably running on Microsoft Azure and use the current
-working directory as the initial directory. A boolean flag indicating this is
-available on the exported module function as `pkgfinder.issnode`.
+In most cases, the following will give you the desired results:
 
-In both cases, if a `package.json` file is found in that directory, then it is
-used. Otherwise, the parent directory is searched. The search for a
-`package.json` file continues until the root directory is found.
+```javascript
+const pkg = require('pkgfinder')();
 
-An exception is thrown if the `package.json` file is not found, cannot be read,
-or does not have a `name` property.
+console.log(pkg.name);
+console.log(pkg.version);
+console.log(pkg.directory);
+```
+
+Given an initial directory, the `pkgfinder` function finds the `package.json` file and returns an object having the following seven properties: `name` {string}, `version` {string}, `directory` {string}, `prop` {function}, `resolve` {function}, `relative` {function}, and `iisnode` {boolean}.
+
+The `name` and `version` are the `name` and `version` properties from the `package.json` file. The `directory` is the location of the `package.json` file. The `prop` function returns an arbitrary property value. The `resolve` function and the `relative` function are similar to their `path` module counterparts, using the `directory` as their first argument.
+
+An exception is thrown if the `package.json` file is not found, cannot be read, or does not have a `name` property.
 
 ## Rationale
 
-Utility packages often care about the application in which they are used rather
-than their own environment. For example, a configuration manager may look for
-an `config` subdirectory in the top-level application directory. This has
-nothing to do with the configuration manager's location in the `node_module`
-tree and may not even have anything to do with the parent module, which could
-be in a `lib` subdirectory.
+Utility packages often care about the application in which they are used rather than their own environment. For example, a configuration manager may look for an `config` subdirectory in the top-level application directory. This has nothing to do with the configuration manager's location in the `node_module` tree and may not even have anything to do with the parent module, which could be in a `lib` subdirectory.
 
 ## Algorithm
 
-1. Determine the main entry point of the application from `require.main.filename`.
-2. Determine the directory of this module using the `path.dirname` function.
-3. Attempt to load the `package.json` file in this directory.
-4. If no `package.json` file is found, seach successive parent directories.
-5. Return the package name and the directory if found. Otherwise, throw an exception.
+1.  Determine the main entry point of the application from `require.main.filename`.
+2.  Determine the directory of this module using the `path.dirname` function.
+3.  Attempt to load the `package.json` file in this directory.
+4.  If no `package.json` file is found, seach successive parent directories.
+5.  Return the package name and the directory if found. Otherwise, throw an exception.
 
 ## License
 

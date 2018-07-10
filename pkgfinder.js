@@ -20,7 +20,9 @@
  * IN THE SOFTWARE.
  */
 
-const path = require("path");
+'use strict';
+
+const path = require('path');
 
 /**
  * Given an initial directory, finds the package.json file and returns an
@@ -54,16 +56,16 @@ function pkgfinder(module) {
   let pathname;
   let pkg;
   while (true) {
-    pathname = path.resolve(current, "package.json");
+    pathname = path.resolve(current, 'package.json');
     try {
       pkg = require(pathname);
       break;
     } catch (err) {
-      if (err.code !== "MODULE_NOT_FOUND") {
+      if (err.code !== 'MODULE_NOT_FOUND') {
         throw err;
       }
     }
-    let parent = path.resolve(current, "..");
+    let parent = path.resolve(current, '..');
     if (current == parent) {
       throw new Error(
         `Cannot find 'package.json' in '${initial}' nor any of its parent directories.`
@@ -79,13 +81,17 @@ function pkgfinder(module) {
     version: pkg.version,
     directory: current,
     resolve: function() {
-      return path.resolve.apply(
-        path,
-        [current].concat(Array.prototype.slice.call(arguments))
-      );
+      return path.resolve.apply(path, [current].concat(Array.prototype.slice.call(arguments)));
     },
     relative: function(to) {
       return path.relative(current, to);
+    },
+    prop: function(name) {
+      const value = pkg[name];
+      if (value === undefined) {
+        throw new Error(`Cannot find property '${name}' in '${pathname}'.`);
+      }
+      return value;
     }
   };
 }
@@ -93,14 +99,14 @@ function pkgfinder(module) {
 pkgfinder.iisnode = require.main.filename.match(/iisnode/i) !== null;
 
 function initialDirectory(module) {
-  if (typeof module === "undefined") {
+  if (typeof module === 'undefined') {
     if (pkgfinder.iisnode) {
       return process.cwd();
     } else {
       return path.dirname(require.main.filename);
     }
   }
-  if (typeof module === "object" && typeof module.filename === "string") {
+  if (typeof module === 'object' && typeof module.filename === 'string') {
     return path.dirname(module.filename);
   }
   throw new Error(`The parameter, if specified, must be a module object.`);
