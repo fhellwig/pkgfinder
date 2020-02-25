@@ -1,6 +1,11 @@
 pkgfinder changes
 =================
 
+1.2.9
+-----
+
+- Updated the README file.
+
 1.2.7
 -----
 

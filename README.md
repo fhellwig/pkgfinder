@@ -7,18 +7,25 @@ Finds the package descriptor file of a node.js application.
 Given a node.js application, finds the `package.json` file.
 
 ```javascript
-const pkg = require('pkgfinder')();
+const pkgfinder = require('pkgfinder');
+
+// The pkgfinder returned from require() is a funtion that must be called
+// returning a pkg object that provides three properties and three functions.
+
+const pkg = pkgfinder();
 ```
 
-The returned `pkg` object has the following seven properties:
+### Properties
 
-- `name`: {string} the name property from the `package.json` file
-- `version`: {string} the version property from the `package.json` file
-- `directory`: {string} the application directory containing the `package.json` file
-- `prop`: {function} returns the value of an arbitrary `package.json` property
-- `resolve`: {function} resolves the specified argument against the application directory
-- `relative`: {function} returns the relative path of the argument with respect to the application directory
-- `iisnode`: {boolean} true if running on (iisnode)[https://github.com/Azure/iisnode] (i.e., Azure).
+- `pkg.name`: {string} the name property from the `package.json` file
+- `pkg.version`: {string} the version property from the `package.json` file
+- `pkg.directory`: {string} the application directory containing the `package.json` file
+
+### Functions
+
+- `pkg.prop(propname)`: {function} returns the value of an arbitrary `package.json` property
+- `pkg.resolve([...paths])`: {function} resolves the specified argument(s) against the application directory
+- `pkg.relative(to)`: {function} returns the relative path of the argument with respect to the application directory
 
 Please see the `examples.js` file for sample usage.
 
@@ -32,21 +39,25 @@ pkgfinder([module]);
 
 The `module` parameter is optional. If it is supplied, then it must be a module object. If the `module` parameter is not specified, then the initial directory is the directory of the `require.main.filename` property. If the `module` parameter is specified, then the initial directory is the directory of the module's `filename` property.
 
-A special exception to this is if `require.main` contains the string `iisnode`. In that case, we are probably running on Microsoft Azure and use the current working directory as the initial directory. A boolean flag indicating this is available on the exported module function as `pkgfinder.issnode`.
+A special exception to this is if `require.main` contains the string `iisnode`. In that case, we are probably running on Microsoft Azure and use the current working directory as the initial directory. A boolean flag indicating this is available on the exported module function as `pkgfinder.issnode`. (Please note that this property is on the `pkgfinder` function itself and not on the returned `pkg` object.)
 
 In both cases, if a `package.json` file is found in that directory, then it is used. Otherwise, the parent directory is searched. The search for a `package.json` file continues until the root directory is found.
 
 In most cases, the following will give you the desired results:
 
 ```javascript
-const pkg = require('pkgfinder')();
+const pkgfinder = require('pkgfinder');
+const pkg = pkgfinder();
+
+// Equivalent to:
+// const pkg = require('pkgfinder')();
 
 console.log(pkg.name);
 console.log(pkg.version);
 console.log(pkg.directory);
 ```
 
-Given an initial directory, the `pkgfinder` function finds the `package.json` file and returns an object having the following seven properties: `name` {string}, `version` {string}, `directory` {string}, `prop` {function}, `resolve` {function}, `relative` {function}, and `iisnode` {boolean}.
+Given an initial directory, the `pkgfinder` function finds the `package.json` file and returns an object having the following six properties: `name` {string}, `version` {string}, `directory` {string}, `prop` {function}, `resolve` {function}, and `relative` {function}.
 
 The `name` and `version` are the `name` and `version` properties from the `package.json` file. The `directory` is the location of the `package.json` file. The `prop` function returns an arbitrary property value. The `resolve` function and the `relative` function are similar to their `path` module counterparts, using the `directory` as their first argument.
 
@@ -62,13 +73,13 @@ Utility packages often care about the application in which they are used rather 
 2.  Determine the directory of this module using the `path.dirname` function.
 3.  Attempt to load the `package.json` file in this directory.
 4.  If no `package.json` file is found, seach successive parent directories.
-5.  Return the package name and the directory if found. Otherwise, throw an exception.
+5.  Return the `pkg` object if found. Otherwise, throw an exception.
 
 ## License
 
 (The MIT License)
 
-Copyright (c) 2018 Frank Hellwig
+Copyright (c) 2020 Frank Hellwig
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

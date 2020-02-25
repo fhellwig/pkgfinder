@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Frank Hellwig
+ * Copyright (c) 2020 Frank Hellwig
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
