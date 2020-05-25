@@ -1,6 +1,13 @@
 pkgfinder changes
 =================
 
+1.2.10
+-----
+
+- Updated the README file.
+- Updated the LICENSE file (and the license block in pkgfinder.js).
+- Ran npm init for a compatible package.json file.
+
 1.2.9
 -----
 

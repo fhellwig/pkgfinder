@@ -39,7 +39,7 @@ pkgfinder([module]);
 
 The `module` parameter is optional. If it is supplied, then it must be a module object. If the `module` parameter is not specified, then the initial directory is the directory of the `require.main.filename` property. If the `module` parameter is specified, then the initial directory is the directory of the module's `filename` property.
 
-A special exception to this is if `require.main` contains the string `iisnode`. In that case, we are probably running on Microsoft Azure and use the current working directory as the initial directory. A boolean flag indicating this is available on the exported module function as `pkgfinder.issnode`. (Please note that this property is on the `pkgfinder` function itself and not on the returned `pkg` object.)
+A special exception to this is if `require.main` contains the string `iisnode`. In that case, we are probably running on Microsoft Azure and use the current working directory as the initial directory. A boolean flag indicating this is available on the exported module function as `pkgfinder.iisnode`. (Please note that this property is on the `pkgfinder` function itself and not on the returned `pkg` object.)
 
 In both cases, if a `package.json` file is found in that directory, then it is used. Otherwise, the parent directory is searched. The search for a `package.json` file continues until the root directory is found.
 
