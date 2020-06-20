@@ -98,7 +98,8 @@ function pkgfinder(module) {
   };
 }
 
-pkgfinder.iisnode = require.main.filename.match(/iisnode/i) !== null;
+//pkgfinder.iisnode = require.main.filename.match(/iisnode/i) !== null;
+pkgfinder.iisnode = isNaN(parseInt(process.env.PORT));
 
 function initialDirectory(module) {
   if (typeof module === 'undefined') {

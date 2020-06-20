@@ -1,8 +1,13 @@
 pkgfinder changes
 =================
 
+1.2.11
+------
+
+- Changed how issnode is detected.
+
 1.2.10
------
+------
 
 - Updated the README file.
 - Updated the LICENSE file (and the license block in pkgfinder.js).
