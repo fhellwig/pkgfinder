@@ -94,12 +94,11 @@ function pkgfinder(module) {
         throw new Error(`Cannot find property '${name}' in '${pathname}'.`);
       }
       return value;
-    }
+    },
   };
 }
 
-//pkgfinder.iisnode = require.main.filename.match(/iisnode/i) !== null;
-pkgfinder.iisnode = isNaN(parseInt(process.env.PORT));
+pkgfinder.iisnode = require.main.filename.match(/iisnode/i) !== null;
 
 function initialDirectory(module) {
   if (typeof module === 'undefined') {
